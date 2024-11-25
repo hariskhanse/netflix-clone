@@ -81,7 +81,7 @@ export async function signup(req, res) {
         return res.status(ConstantError.SERVER_ERROR).json
             ({
                 success: false,
-                message: ConstantError.SERVER_ERROR
+                message: ConstantError.INTERNAL_SERVER_ERROR
             });
     }
 }
@@ -131,7 +131,7 @@ export async function login(req, res) {
         return res.status(ConstantError.SERVER_ERROR).json
             ({
                 success: false,
-                message: ConstantError.SERVER_ERROR
+                message: ConstantError.INTERNAL_SERVER_ERROR
             });
     }
 }
@@ -148,7 +148,7 @@ export async function logout(req, res) {
         return res.status(ConstantError.SERVER_ERROR).json
             ({
                 success: false,
-                message: ConstantError.SERVER_ERROR
+                message: ConstantError.INTERNAL_SERVER_ERROR
             });
     }
 }

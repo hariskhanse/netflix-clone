@@ -1,3 +1,4 @@
+import { ConstanData, ConstantError, ControllerError } from "../common/ConstantError.js";
 import User from "../models/user.model.js";
 import { fetchFromTMBD } from "../services/tmbd.service.js";
 
@@ -12,16 +13,16 @@ export async function searchPerson(req, res) {
                     id: data.results[0].id,
                     image: data.results[0].profile_path,
                     title: data.results[0].name,
-                    searchType: "person",
+                    searchType: ConstanData.PERSON,
                     createdAt: new Date()
                 }
             }
         });
 
-        return res.status(200).json({ success: true, content: data });
+        return res.status(ConstantError.SUCCESS).json({ success: true, content: data });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        console.log(ControllerError.SEARCH_PERSON, error);
+        return res.status(ConstantError.SERVER_ERROR).json({ success: false, message: ConstantError.INTERNAL_SERVER_ERROR });
     }
 }
 
@@ -36,16 +37,16 @@ export async function searchmovie(req, res) {
                     id: data.results[0].id,
                     image: data.results[0].poster_path,
                     title: data.results[0].title,
-                    searchType: "movie",
+                    searchType: ConstanData.MOVIE,
                     createdAt: new Date()
                 }
             }
         });
 
-        return res.status(200).json({ success: true, content: data });
+        return res.status(ConstantError.SUCCESS).json({ success: true, content: data });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        console.log(ControllerError.SEARCH_MOVIE, error);
+        return res.status(ConstantError.SERVER_ERROR).json({ success: false, message: ConstantError.INTERNAL_SERVER_ERROR });
     }
 }
 
@@ -60,36 +61,36 @@ export async function searchtv(req, res) {
                     id: data.results[0].id,
                     image: data.results[0].poster_path,
                     title: data.results[0].title,
-                    searchType: "tv",
+                    searchType: ConstanData.TV,
                     createdAt: new Date()
                 }
             }
         });
 
-        return res.status(200).json({ success: true, content: data });
+        return res.status(ConstantError.SUCCESS).json({ success: true, content: data });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        console.log(ControllerError.SEARCH_TV, error);
+        return res.status(ConstantError.SERVER_ERROR).json({ success: false, message: ConstantError.INTERNAL_SERVER_ERROR });
     }
 }
 
 export async function getSearchHistory(req, res) {
     try {
-        const data = await User.findById(req.user._id).populate("searchHistory");
-        return res.status(200).json({ success: true, content: data.searchHistory });
+        const data = await User.findById(req.user._id).populate(ConstanData.SEARCH_HISTORY);
+        return res.status(ConstantError.SUCCESS).json({ success: true, content: data.searchHistory });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        console.log(ControllerError.GET_SEARCH_HISTORY, error);
+        return res.status(ConstantError.SERVER_ERROR).json({ success: false, message: ConstantError.INTERNAL_SERVER_ERROR });
     }
 }
 
 export async function deleteSearchHistory(req, res) {
     try {
-        const data = await User.findByIdAndUpdate(req.user._id, { $set: { searchHistory: [] } }, { new: true }).populate("searchHistory");
-        return res.status(200).json({ success: true, content: data.searchHistory });
+        const data = await User.findByIdAndUpdate(req.user._id, { $set: { searchHistory: [] } }, { new: true }).populate(ConstanData.SEARCH_HISTORY);
+        return res.status(ConstantError.SUCCESS).json({ success: true, content: data.searchHistory });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        console.log(ControllerError.DELETE_SEARCH_HISTORY, error);
+        return res.status(ConstantError.SERVER_ERROR).json({ success: false, message: ConstantError.INTERNAL_SERVER_ERROR });
     }
 }
 
@@ -104,8 +105,11 @@ export async function removeItemFromSearchHistory(req, res) {
                 },
             },
         });
+
+        const data = await User.findById(req.user._id).populate(ConstanData.SEARCH_HISTORY);
+        return res.status(ConstantError.SUCCESS).json({ success: true, content: data.searchHistory });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        console.log(ControllerError.REMOVE_ITEM_FROM_SEARCH_HISTORY, error);
+        return res.status(ConstantError.SERVER_ERROR).json({ success: false, message: ConstantError.INTERNAL_SERVER_ERROR });
     }
 }
