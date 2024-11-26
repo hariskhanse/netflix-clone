@@ -7,6 +7,8 @@ import Stranger_Things from '../../../public/assets/images/stranger-things-lg.pn
 import Download_Gif from '../../../public/assets/images/download-icon.gif'
 import DEVICE from '../../../public/assets/images/device-pile.png'
 import Kids from '../../../public/assets/images/kids.png'
+import Video from '../../../public/assets/images/hero-vid.m4v'
+import Device_Video from '../../../public/assets/images/video-devices.m4v'
 const AuthScreen = () => {
     const [email, setEmail] = useState("");
     const navigate = useNavigate();
@@ -58,13 +60,13 @@ const AuthScreen = () => {
                         <div className='flex-1 relative'>
                             <img src={TV_LOGO} alt='Tv image' className='mt-4 z-20 relative' />
                             <video
-                                className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-1/2 z-10'
+                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-1/2 z-10"
                                 playsInline
                                 autoPlay={true}
                                 muted
                                 loop
                             >
-                                <source src='/hero-vid.m4v' type='video/mp4' />
+                                <source src={Video} type="video/x-m4v" />
                             </video>
                         </div>
                     </div>
@@ -125,7 +127,7 @@ const AuthScreen = () => {
                                 muted
                                 loop
                             >
-                                <source src='/video-devices.m4v' type='video/mp4' />
+                                <source src={Device_Video} type='video/mp4' />
                             </video>
                         </div>
                     </div>
