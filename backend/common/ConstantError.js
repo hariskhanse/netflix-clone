@@ -42,7 +42,8 @@ export const ControllerError = {
     GET_SIMILAR_MOVIES: "Error in getSimilarMovies controller",
     GET_MOVIE_DETAIL: "Error in getMovieDetail controller",
     GET_MOVIE_TRAILERS: "Error in getMovieTrailers controller",
-    GET_TRENDING_MOVIE: "Error in getTrendingMovie controller"
+    GET_TRENDING_MOVIE: "Error in getTrendingMovie controller",
+    AUTH_CHECK: "Error in AUTH_CHECK controller"
 }
 
 export const ConstanData = {

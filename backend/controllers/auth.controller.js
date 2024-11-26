@@ -152,3 +152,20 @@ export async function logout(req, res) {
             });
     }
 }
+
+export async function authCheck(req, res) {
+    try {
+        return res.status(ConstantError.SUCCESS).json
+            ({
+                success: true,
+                User: req.user
+            })
+    } catch (error) {
+        console.log(ControllerError.AUTH_CHECK, error);
+        return res.status(ConstantError.SERVER_ERROR).json
+            ({
+                success: false,
+                message: ConstantError.INTERNAL_SERVER_ERROR
+            });
+    }
+}
