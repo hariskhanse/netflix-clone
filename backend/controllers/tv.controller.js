@@ -4,7 +4,8 @@ import { fetchFromTMBD } from "../services/tmbd.service.js";
 export async function getTrendingtTv(req, res) {
     try {
         const data = await fetchFromTMBD("https://api.themoviedb.org/3/trending/tv/day?language=en-US");
-        return res.status(ConstantError.SUCCESS).json({ success: true, content: data });
+        const randomTv = data.results[Math.floor(Math.random() * data.results?.length)];
+        return res.status(ConstantError.SUCCESS).json({ success: true, content: randomTv });
     } catch (error) {
         console.log(ControllerError.GET_TRENDING_TV, error);
         return res.status(ConstantError.SERVER_ERROR).json({ success: false, message: ConstantError.INTERNAL_SERVER_ERROR });

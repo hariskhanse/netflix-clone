@@ -3,14 +3,17 @@ import { Link } from "react-router-dom";
 import FormContainer from "../ReuseComponent/FormContainer";
 import Input from "../ReuseComponent/Input";
 import Button from "../ReuseComponent/Button";
+import { useAuthStore } from "../../store/authUser";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = async (e) => {
+    const { login, isLoggingIn } = useAuthStore();
+
+    const handleLogin = (e) => {
         e.preventDefault();
-        console.log(email, password);
+        login({ email, password });
     };
 
     return (
@@ -39,7 +42,9 @@ const Login = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="••••••••"
                     />
-                    <Button>Sign In</Button>
+                    <Button disabled={isLoggingIn}>
+                        {isLoggingIn ? "Loading..." : "Login"}
+                    </Button>
                 </form>
 
                 <div className="text-center text-gray-400">
