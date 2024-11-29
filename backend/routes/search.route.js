@@ -7,7 +7,7 @@ router.get("/person/:query", searchPerson);
 router.get("/movie/:query", searchmovie);
 router.get("/tv/:query", searchtv);
 router.get("/history", getSearchHistory);
-router.get("/deleteHistory", deleteSearchHistory)
+router.delete("/deleteHistory", deleteSearchHistory)
 
 router.delete("/history/:id", removeItemFromSearchHistory)
 

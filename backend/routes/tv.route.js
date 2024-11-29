@@ -6,7 +6,7 @@ const router = express.Router();
 router.get("/trending", getTrendingtTv);
 router.get("/:id/trailers", getTvTrailers);
 router.get("/:id/details", getTvDetail);
-router.get("/:id/similarTv", getSimilarTvs)
+router.get("/:id/similar", getSimilarTvs)
 router.get("/:category", getTvShowsByCategory)
 
 export default router;
