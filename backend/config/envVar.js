@@ -9,4 +9,6 @@ export const ENV_VARs = {
     NODE_ENV: process.env.NODE_ENV,
     TMBD_API_KEY: process.env.TMBD_API_KEY,
     TMBD_API_TOKEN: process.env.TMBD_API_TOKEN,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_PUBLIC_KET: process.env.STRIPE_PUBLIC_KET
 }

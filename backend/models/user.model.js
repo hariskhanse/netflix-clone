@@ -30,7 +30,12 @@ const userSchema = new mongoose.Schema({
     watchList: {
         type: Array,
         default: [],
-    }
+    },
+    activeSubscription: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subscription',
+        default: null
+    },
 });
 
 const User = mongoose.model("User", userSchema);
