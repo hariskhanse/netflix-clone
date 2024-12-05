@@ -42,8 +42,6 @@ export async function updateSubscription(req, res) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
     const subscriptionId = req.body.subscriptionId;
     const newPlan = req.body.newPlan;
-    console.log("subscriptionId", subscriptionId);
-    console.log("newPlan", newPlan);
     if (!subscriptionId || !newPlan) {
         return res.status(400).send('Subscription ID or new plan is missing');
     }
