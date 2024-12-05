@@ -3,20 +3,18 @@ import toast from "react-hot-toast";
 import { create } from "zustand";
 
 export const useSubscription = create((set) => ({
-    isSubscription: false,
-    data: null,
-    createSubscription: async (plan) => {
-        set({ isSubscription: true });
+    isSubscriptionContent: false,
+    subscriptionContent: null,
+    getSubscriptionData: async (subscriptionId) => {
+        set({ isSubscriptionContent: true });
         try {
-            const response = await axios.get(`/api/v1/subscription/subscribe`, {
-                params: { plan },
+            const response = await axios.get(`/api/v1/subscription/getSubscriptionData`, {
+                params: { subscriptionId },
             });
-            console.log(response)
-            set({ data: response.data.content, isSubscription: false });
-            toast.success("Subscription Created");
+            set({ subscriptionContent: response.data.subscription, isSubscriptionContent: false });
         } catch (error) {
-            toast.error(error.response?.data?.message || "Subscription failed");
-            set({ isSubscription: false });
+            toast.error(error.response?.data?.message || "Failed to load subscription data.");
+            set({ isSubscriptionContent: false });
         }
-    }
-}))
+    },
+}));

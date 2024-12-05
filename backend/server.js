@@ -10,8 +10,8 @@ import { connectDb } from './config/db.js';
 import { protectRoute } from './middleware/protectRoutues.js';
 import cookieParser from 'cookie-parser';
 import Stripe from 'stripe';
-import User from './models/user.model.js';
 import Subscription from './models/subscription.model.js';
+import User from './models/user.model.js';
 
 const app = express();
 app.use('/webhook', express.raw({ type: 'application/json' }));
@@ -42,8 +42,6 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
         console.error('Webhook signature verification failed:', err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
-
-
     switch (event.type) {
         case 'checkout.session.completed': {
             try {
@@ -55,13 +53,32 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
                     return res.status(400).send('Missing user ID');
                 }
 
+                const plan = subscription.items.data[0].price;
+
+                if (!plan) {
+                    console.error('Plan data is missing in subscription');
+                    return res.status(400).send('Plan data is missing');
+                }
+
+                const amount = plan.unit_amount ? plan.unit_amount / 100 : null;
+                const amountDecimal = plan.amount_decimal || `${amount}`;
+                const interval = plan.recurring?.interval;
+                if (!amount || !amountDecimal || !interval) {
+                    console.error('Missing plan details:', { amount, amountDecimal, interval });
+                    return res.status(400).send('Missing plan details');
+                }
+
                 const newSubscription = new Subscription({
                     userId,
-                    planId: subscription.items.data[0].price.product,
+                    planId: plan.id,
                     subscriptionId: subscription.id,
                     status: subscription.status,
                     startDate: new Date(subscription.start_date * 1000),
                     endDate: new Date(subscription.current_period_end * 1000),
+                    amount,
+                    interval,
+                    product: plan.product,
+                    amountDecimal
                 });
 
                 await newSubscription.save();
@@ -69,7 +86,7 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
                 await User.findByIdAndUpdate(userId, { activeSubscription: newSubscription._id });
 
             } catch (error) {
-                console.error('Error processing subscription:', error.message);
+                console.error('Error processing subscription:', error);
                 return res.status(500).send('Internal Server Error');
             }
             break;
@@ -80,7 +97,6 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
 
     res.status(200).send('Event processed');
 });
-
 app.listen(PORT, () => {
     console.log('Server is running on port http://localhost:' + PORT);
     connectDb();

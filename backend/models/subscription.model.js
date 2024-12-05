@@ -27,6 +27,22 @@ const subscriptionSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    amount: {
+        type: Number,
+        required: true
+    },
+    interval: {
+        type: String,
+        required: true
+    },
+    product: {
+        type: String,
+        required: true
+    },
+    amountDecimal: {
+        type: Number,
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -34,8 +50,8 @@ const subscriptionSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: Date.now
-    },
-})
+    }
+});
 
 const Subscription = mongoose.model('Subscription', subscriptionSchema);
 

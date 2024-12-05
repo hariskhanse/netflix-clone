@@ -1,10 +1,19 @@
-import { Link } from 'react-router-dom';
-import { useAuthStore } from '../../store/authUser';
-import Navbar from './../Pages/Home/Navbar';
-import SubscriptionPlan from './SubscriptionPlan';
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuthStore } from "../../store/authUser";
+import Navbar from "../Pages/Home/Navbar";
+import SubscriptionPlan from "./SubscriptionPlan";
+import { useSubscription } from "../../store/subscription";
 
 const Profile = () => {
     const { user } = useAuthStore();
+    const { getSubscriptionData, subscriptionContent } = useSubscription();
+
+    useEffect(() => {
+        if (user?.activeSubscription) {
+            getSubscriptionData(user.activeSubscription);
+        }
+    }, [user?.activeSubscription, getSubscriptionData]);
 
     const subscriptionPlans = [
         {
@@ -18,14 +27,16 @@ const Profile = () => {
             description: "Unlimited access for one month.",
             price: "$20.00",
             buttonText: "Buy 1-Month Plan",
-            subjec: "starter"
+            subjec: "starter",
+            priceId: "price_1QRUMZCsF6BsqQoYfLu0m7CG"
         },
         {
             title: "1-Year Plan",
             description: "Unlimited access for a year.",
             price: "$40.00",
             buttonText: "Buy 1-Year Plan",
-            subjec: "pro"
+            subjec: "pro",
+            priceId: "price_1QRUNICsF6BsqQoYimKlTrWN"
         },
     ];
 
@@ -35,7 +46,6 @@ const Profile = () => {
                 <Navbar />
                 <div className="max-w-6xl mx-auto px-6 py-12">
                     <h1 className="text-4xl font-bold mb-8 text-center">Profile</h1>
-
                     <div className="bg-gray-800 rounded-lg shadow-lg p-6 mb-12">
                         <h2 className="text-2xl font-semibold mb-4 border-b border-gray-700 pb-2">
                             User Information
@@ -51,18 +61,21 @@ const Profile = () => {
                             </div>
                         </div>
                     </div>
-
                     <div className="bg-gray-800 rounded-lg shadow-lg p-6">
                         <h2 className="text-2xl font-semibold mb-6 border-b border-gray-700 pb-2">
                             Subscription Plans
                         </h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {subscriptionPlans.map((plan, index) => (
-                                <SubscriptionPlan key={index} plan={plan} />
+                                <SubscriptionPlan
+                                    key={index}
+                                    plan={plan}
+                                    subscriptionId={user?.activeSubscription || null}
+                                    subscriptionContent={subscriptionContent}
+                                />
                             ))}
                         </div>
                     </div>
-
                     <div className="text-center mt-12">
                         <Link
                             to="/"

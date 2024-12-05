@@ -1,10 +1,11 @@
 import express from 'express';
-import { cancelSubscription, subscribePayment, successSubscription } from '../controllers/subscription.controller.js';
+import { cancelSubscription, subscribePayment, updateSubscription, getSubscriptionData } from '../controllers/subscription.controller.js';
 
 const router = express.Router();
 
 router.get("/subscribe", subscribePayment)
-router.get("/success", successSubscription)
-router.get("/cancel", cancelSubscription)
+router.put("/update", updateSubscription)
+router.delete("/cancel", cancelSubscription)
+router.get("/getSubscriptionData", getSubscriptionData)
 
 export default router;
